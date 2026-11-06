@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ — Часто задаваемые вопросы</title>
+    <style>
+        /* Подключение фирменного шрифта Open Sans */
+        @font-face {
+            font-family: 'Open Sans';
+            font-style: normal;
+            font-weight: 300;
+            font-stretch: 100%;
+            font-display: swap;
+            src: url(https://gstatic.com) format('woff2');
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 300;
+            background-color: #ffffff;
+            color: #333333;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        /* Светло-серое окно-подложка для FAQ */
+        .faq-wrapper {
+            background-color: #f7f9fa;
+            border-radius: 16px;
+            padding: 40px;
+            width: 100%;
+            max-width: 860px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
+        }
+
+        .faq-container {
+            width: 100%;
+        }
+
+        .faq-title {
+            font-size: 32px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 32px;
+            color: #1f8180;
+            text-shadow: 1px 1px BLACK;
+            line-height: 1.3;
+        }
+
+        /* ===== ВКЛАДКИ ===== */
+        .faq-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 28px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .faq-tab {
+            appearance: none;
+            -webkit-appearance: none;
+            border: 1px solid #d5e3e4;
+            background-color: #ffffff;
+            color: #1f8180;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .faq-tab:hover {
+            background-color: #e8f4f5;
+            border-color: #b6e5ea;
+        }
+
+        .faq-tab:focus-visible {
+            outline: 2px solid #1f8180;
+            outline-offset: 2px;
+        }
+
+        .faq-tab[aria-selected="true"] {
+            background-color: #1f8180;
+            border-color: #1f8180;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(31, 129, 128, 0.25);
+        }
+
+        /* Панели с вопросами */
+        .faq-panel {
+            display: none;
+            animation: fadeIn 0.35s ease-out;
+        }
+
+        .faq-panel.is-active {
+            display: block;
+        }
+
+        /* Стили для спойлера */
+        .faq-item {
+            border-bottom: 1px solid #e0e0e0;
+            overflow: hidden;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-item summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            padding: 24px 0;
+            font-size: 18px;
+            font-weight: 400;
+            cursor: pointer;
+            list-style: none;
+            user-select: none;
+            transition: color 0.2s ease;
+        }
+
+        .faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .faq-item summary:hover {
+            color: #1f8180;
+        }
+
+        .faq-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 auto;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 24px;
+            line-height: 1;
+            transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+            color: #1f8180;
+        }
+
+        .faq-item summary:hover .faq-icon {
+            background-color: #b6e5ea;
+        }
+
+        .faq-content {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #666666;
+            padding-bottom: 24px;
+            text-align: justify;
+        }
+
+        .faq-item[open] .faq-content {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .faq-item[open] summary {
+            color: #1f8180;
+        }
+
+        .faq-item[open] summary .faq-icon {
+            transform: rotate(45deg);
+            color: #1f8180;
+            background-color: #b6e5ea;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Отступ, отделяющий основной блок от футера */
+        .footer-separator {
+            margin-top: 60px;
+        }
+
+        /* Футер-окно на всю ширину страницы */
+        .alert-footer {
+            background-color: #1f8180;
+            color: #ffffff;
+            width: 100%;
+            padding: 20px 0;
+            box-sizing: border-box;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+/* ===== СЛАЙДЕР ===== */
+.slider {
+    position: relative;
+    margin: 8px 0 4px;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #eef3f4;
+    user-select: none;
+}
+
+.slider-viewport {
+    overflow: hidden;
+}
+
+.slider-track {
+    display: flex;
+    transition: transform 0.45s ease;
+    will-change: transform;
+}
+
+.slide {
+    flex: 0 0 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.slide img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 760 / 320;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+.slide figcaption {
+    width: 100%;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    color: #1f8180;
+    background-color: #ffffff;
+    letter-spacing: 0.3px;
+}
+
+/* Стрелки */
+.slider-btn {
+    position: absolute;
+    top: calc(50% - 22px); /* выравнивание по центру изображения */
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(31, 129, 128, 0.85);
+    color: #ffffff;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, transform 0.15s ease, opacity 0.2s ease;
+    z-index: 2;
+}
+
+.slider-btn:hover {
+    background-color: #1f8180;
+}
+
+.slider-btn:active {
+    transform: translateY(-50%) scale(0.94);
+}
+
+.slider-btn:focus-visible {
+    outline: 2px solid #1f8180;
+    outline-offset: 2px;
+}
+
+.slider-btn--prev { left: 12px; }
+.slider-btn--next { right: 12px; }
+
+/* Точки */
+.slider-dots {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 44px; /* над подписью */
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    z-index: 2;
+}
+
+.slider-dot {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 0 1px rgba(31, 129, 128, 0.4);
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.slider-dot:hover {
+    background-color: #ffffff;
+}
+
+.slider-dot.is-active {
+    background-color: #1f8180;
+    transform: scale(1.25);
+    box-shadow: 0 0 0 1px #ffffff;
+}
+
+.slider-dot:focus-visible {
+    outline: 2px solid #1f8180;
+    outline-offset: 2px;
+}
+
+/* На мобильных стрелки чуть меньше */
+@media (max-width: 600px) {
+    .slider-btn {
+        width: 34px;
+        height: 34px;
+        font-size: 13px;
+    }
+    .slider-btn--prev { left: 6px; }
+    .slider-btn--next { right: 6px; }
+    .slider-dots { bottom: 40px; }
+    .slide figcaption { font-size: 12px; padding: 8px 12px; }
+}
+/* Конец слайдера */
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 12px;
+            }
+            .faq-wrapper {
+                padding: 24px 16px;
+            }
+            .faq-title {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+            .faq-tabs {
+                gap: 6px;
+                margin-bottom: 20px;
+            }
+            .faq-tab {
+                font-size: 13px;
+                padding: 8px 14px;
+            }
+            .faq-item summary {
+                font-size: 16px;
+                padding: 16px 0;
+            }
+            .faq-content {
+                font-size: 14px;
+                padding-bottom: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Светло-серая подложка-окно -->
+    <div class="faq-wrapper">
+        <div class="faq-container">
+            <h2 class="faq-title">
+                <span style="font-weight: 800; font-size: 45px;">FAQ</span><br>
+                по работе с ЦОС «Цифровой психолог»<br>
+                для образовательных организаций Владимирской области
+            </h2>
+
+            <!-- ===== ГОРИЗОНТАЛЬНЫЕ ВКЛАДКИ ===== -->
+            <div class="faq-tabs" role="tablist" aria-label="Разделы часто задаваемых вопросов">
+                <button class="faq-tab" role="tab" id="tab-registration" aria-controls="panel-registration" aria-selected="true" data-tab="registration">Основной раздел</button>
+                <button class="faq-tab" role="tab" id="tab-roles" aria-controls="panel-roles" aria-selected="false" data-tab="roles" tabindex="-1">Ошибки и их исправление</button>
+                <button class="faq-tab" role="tab" id="tab-work" aria-controls="panel-work" aria-selected="false" data-tab="work" tabindex="-1">Другое</button>
+            </div>
+
+            <!-- ===== ПАНЕЛЬ 1: ОСНОВНОЙ РАЗДЕЛ ===== -->
+            <div class="faq-panel is-active" id="panel-registration" role="tabpanel" aria-labelledby="tab-registration">
+                <!-- Элемент FAQ 1 (Открыт по умолчанию) -->
+                <details class="faq-item" open>
+                    <summary>
+                        Как специалисту зарегистрироваться в ЦОС «Цифровой психолог»?
+                        <span class="faq-icon">+</span>
+                    </summary>
+                    <div class="faq-content">
+                        Для формирования базы специалистов в 2025–2026 годах образовательные организации отправляли соответствующие формы по защищенным каналам связи и через ЕПГУ (Госуслуги).
+                        <br><br>
+                        В дальнейшем, согласно дополнению к письму Минпросвещения России от 20 августа 2026 г. № ВЖ-1728/04, школам необходима постоянная актуализация сведений в РГИС о сотрудниках образовательных организаций с ролями «Руководитель ОО» и «Педагог-психолог ОО» по мере изменения кадрового состава для дальнейшей <span style="text-decoration: underline; font-weight: 600;">автоматической выгрузки в цифровой образовательный сервис «Цифровой психолог».</span>
+                    </div>
+                </details>
+
+                <!-- Элемент FAQ 2 -->
+                <details class="faq-item">
+                    <summary>
+                        Когда можно входить в систему? Как быстро приходит доступ?
+                        <span class="faq-icon">+</span>
+                    </summary>
+                    <div class="faq-content">
+                        На внесение новых данных в систему нужно время. Минцифры собирают сведения → обрабатывают → присваивают роли → выгружают в базу → направляют уведомления.
+                        <br><br>
+                        Только после получения на почту или в ЕПГУ уведомления от ЦОС «Цифровой психолог» можно входить в систему и начинать работу.
+                        <br><br>
+                        Вход в систему осуществляется по адресу: <a href="https://specialist-psy.gosuslugi.ru/specialist">specialist-psy.gosuslugi.ru/specialist</a>
+                    </div>
+                </details>
+
+                                <!-- Элемент FAQ 3 -->
+                <details class="faq-item">
+                    <summary>
+                        Кто такой «Технический оператор»?
+                        <span class="faq-icon">+</span>
+                    </summary>
+                    <div class="faq-content">
+                        Технический оператор — подтверждает профиль и расписание специалиста, согласовывает больничные и отпуска, имеет доступ к просмотру контента БПК, управляет расписанием педагога-психолога в части добавления, изменения (переноса), отмены, просмотра и фильтрации записей к педагогу-психологу, подтверждения и отклонения заявок на изменение (перенос) и отмену записей к педагогу-психологу.
+                        <br><br>
+                        В каждой организации, где по штатному расписанию есть специалисты (даже на 0,25 ставки), работающие в ЦОС ЦП, должен быть и «Технический оператор».
+                    </div>
+                </details>
+
+                <!-- Элемент FAQ 4 -->
+                <details class="faq-item">
+                    <summary>
+                        Может ли «Педагог-психолог» быть одновременно и «Техническим оператором»?
+                        <span class="faq-icon">+</span>
+                    </summary>
+                    <div class="faq-content">
+                        Технический оператор — это сотрудник, курирующий работу специалиста (педагога-психолога, социального педагога и т.д.).
+                        <br><br>
+                        Поэтому совмещение именно этих двух ролей категорически запрещено. Педагог-психолог, в дополнение к своей роли, может иметь другую роль, например, записывающего специалиста.
+                    </div>
+                </details>
+
+                                <!-- Элемент FAQ 5 -->
+                <details class="faq-item">
+                    <summary>
+                        Как назначить в организации «Технического оператора»?
+                        <span class="faq-icon">+</span>
+                    </summary>
+                    <div class="faq-content">
+                        1) В первую очередь школе необходимо локальным актом назначить технического оператора, обеспечивающего согласование анкет сотрудников, утверждение расписаний консультаций, в том числе периоды нетрудоспособности и отпуска сотрудников.
+                        <br><br>
+                        <span style="text-decoration: underline; font-weight: 600;">ВНИМАНИЕ! Переходите к пункту 2, только если ранее школой не направлялась информация о назначении «Технического оператора» по защищенным каналам связи или через ЕПГУ.</span>
+                        <br><br>
+                        2) Необходимо направить сведения о сотрудниках с ролью «Технический оператор» региональному администратору управления доступом своего региона по установленной <a href="ссылка_на_страницу">форме</a> на адрес: <a href="ссылка_на_страницу">mail@mail.ru</a>.
+                    </div>
+                </details>
+
+                                <!-- Элемент FAQ 6 -->
+                <details class="faq-item">
+                    <summary>
+                        Как войти в личный кабинет «Техническому оператору»?
+                        <span class="faq-icon">+</span>
+                    </summary>
+                    <div class="faq-content">
+                        Вход в систему осуществляется по адресу: <a href="https://admin-psy.gosuslugi.ru/administrator">admin-psy.gosuslugi.ru/administrator</a>
+                    </div>
+                </details>
+
+
+
+
+            </div>
+
+            <!-- ===== ПАНЕЛЬ 2: ОШИБКИ И ИХ ИСПРАВЛЕНИЕ ===== -->
+            <div class="faq-panel" id="panel-roles" role="tabpanel" aria-labelledby="tab-roles">
+                <!-- Элемент FAQ 1 -->
+                <details class="faq-item">
+                    <summary>
+                        Кто такой «Технический оператор»?
+                        <span class="faq-icon">+</span>
+                    </summary>
+                    <div class="faq-content">
+                        Технический оператор — подтверждает профиль и расписание специалиста, согласовывает больничные и отпуска, имеет доступ к просмотру контента БПК, управляет расписанием педагога-психолога в части добавления, изменения (переноса), отмены, просмотра и фильтрации записей к педагогу-психологу, подтверждения и отклонения заявок на изменение (перенос) и отмену записей к педагогу-психологу.
+                        <br><br>
+                        В каждой организации, где по штатному расписанию есть специалисты (даже на 0,25 ставки), работающие в ЦОС ЦП, должен быть и «Технический оператор».
+                    </div>
+                </details>
+
+                
+
+
+            </div>
+
+            <!-- ===== ПАНЕЛЬ 3: ДРУГОЕ ===== -->
+            <div class="faq-panel" id="panel-work" role="tabpanel" aria-labelledby="tab-work">
+            
+            <!-- Элемент FAQ 1 -->
+                <details class="faq-item">
+                    <summary>
+                        Как работать в ЦОС «Цифровой психолог»?
+                        <span class="faq-icon">+</span>
+                    </summary>
+                    <div class="faq-content">
+                        Подробная информация с руководствами и обучающими вебинарами расположена на Яндекс Диске — <a href="https://disk.yandex.ru/d/rruXvwAX4G2mBw">Ссылка с доступом</a> 
+                    </div>
+                </details>
+
+            <!-- Элемент FAQ 7 -->
+                <details class="faq-item">
+                    <summary>
+                        Ошибка "Доступ запрещен"
+                        <span class="faq-icon">+</span>
+                    </summary>
+                    <div class="faq-content">
+                        <div class="faq-content">
+                            Самая распространенная ошибка, которая может выглядеть по разному в зависимости от браузера, провайдера и операционной системы. Устраняется очисткой куки - или масштабно через историю браузера.
+                            <div class="slider" data-slider>
+                                <div class="slider-viewport">
+                                    <div class="slider-track" data-slider-track>
+                                        <figure class="slide is-active">
+                                            <img src="https://placehold.co/760x320/1f8180/ffffff?text=Слайд+1" alt="Слайд 1 — интерфейс ЦОС">
+                                            <figcaption>Личный кабинет специалиста</figcaption>
+                                        </figure>
+                                        <figure class="slide">
+                                            <img src="https://placehold.co/760x320/b6e5ea/1f8180?text=Слайд+2" alt="Слайд 2 — расписание">
+                                            <figcaption>Расписание консультаций</figcaption>
+                                        </figure>
+                                        <figure class="slide">
+                                            <img src="https://placehold.co/760x320/2c5c5b/ffffff?text=Слайд+3" alt="Слайд 3 — панель оператора">
+                                            <figcaption>Панель технического оператора</figcaption>
+                                        </figure>
+                                    </div>
+                                </div>
+
+                                <button type="button" class="slider-btn slider-btn--prev" data-slider-prev aria-label="Предыдущий слайд">&#10094;</button>
+                                <button type="button" class="slider-btn slider-btn--next" data-slider-next aria-label="Следующий слайд">&#10095;</button>
+
+                                <div class="slider-dots" data-slider-dots role="tablist" aria-label="Навигация по слайдам"></div>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+        </div>
+
+        <!-- Разделительный блок для создания пустого пространства -->
+        <div class="footer-separator"></div>
+
+        <!-- Футер во всю ширину страницы -->
+        <footer class="alert-footer">
+            <div class="footer-content">
+                Информация на данной странице будет периодически обновляться
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        (function () {
+            const tabs = Array.from(document.querySelectorAll('.faq-tab'));
+            const panels = Array.from(document.querySelectorAll('.faq-panel'));
+
+            function activateTab(tab) {
+                const targetId = tab.getAttribute('aria-controls');
+
+                tabs.forEach(function (t) {
+                    const isActive = t === tab;
+                    t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    t.tabIndex = isActive ? 0 : -1;
+                });
+
+                panels.forEach(function (p) {
+                    p.classList.toggle('is-active', p.id === targetId);
+                });
+            }
+
+            tabs.forEach(function (tab) {
+                tab.addEventListener('click', function () {
+                    activateTab(tab);
+                });
+
+                // Навигация стрелками влево/вправо для доступности
+                tab.addEventListener('keydown', function (event) {
+                    const currentIndex = tabs.indexOf(tab);
+                    let newIndex = null;
+
+                    if (event.key === 'ArrowRight') {
+                        newIndex = (currentIndex + 1) % tabs.length;
+                    } else if (event.key === 'ArrowLeft') {
+                        newIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+                    } else if (event.key === 'Home') {
+                        newIndex = 0;
+                    } else if (event.key === 'End') {
+                        newIndex = tabs.length - 1;
+                    }
+
+                    if (newIndex !== null) {
+                        event.preventDefault();
+                        tabs[newIndex].focus();
+                        activateTab(tabs[newIndex]);
+                    }
+                });
+            });
+        })();
+    </script>
+
+    <!-- СКРИПТ СЛАЙДЕРА КАРТИНОК-->
+    <script>
+    (function () {
+        const sliders = document.querySelectorAll('[data-slider]');
+
+        sliders.forEach(function (slider) {
+            const track   = slider.querySelector('[data-slider-track]');
+            const slides  = Array.from(track.children);
+            const prevBtn = slider.querySelector('[data-slider-prev]');
+            const nextBtn = slider.querySelector('[data-slider-next]');
+            const dotsBox = slider.querySelector('[data-slider-dots]');
+
+            let index = 0;
+            let autoplayId = null;
+            const AUTOPLAY_MS = 5000;
+
+            // Создаём точки
+            slides.forEach(function (_, i) {
+                const dot = document.createElement('button');
+                dot.type = 'button';
+                dot.className = 'slider-dot' + (i === 0 ? ' is-active' : '');
+                dot.setAttribute('aria-label', 'Слайд ' + (i + 1));
+                dot.addEventListener('click', function () {
+                    goTo(i);
+                    restartAutoplay();
+                });
+                dotsBox.appendChild(dot);
+            });
+
+            const dots = Array.from(dotsBox.children);
+
+            function render() {
+                track.style.transform = 'translateX(' + (-index * 100) + '%)';
+                slides.forEach(function (s, i) {
+                    s.classList.toggle('is-active', i === index);
+                });
+                dots.forEach(function (d, i) {
+                    d.classList.toggle('is-active', i === index);
+                    d.setAttribute('aria-current', i === index ? 'true' : 'false');
+                });
+            }
+
+            function goTo(i) {
+                index = (i + slides.length) % slides.length;
+                render();
+            }
+
+            function next() { goTo(index + 1); }
+            function prev() { goTo(index - 1); }
+
+            prevBtn.addEventListener('click', function () { prev(); restartAutoplay(); });
+            nextBtn.addEventListener('click', function () { next(); restartAutoplay(); });
+
+            // Клавиатура
+            slider.setAttribute('tabindex', '0');
+            slider.addEventListener('keydown', function (e) {
+                if (e.key === 'ArrowLeft')  { prev(); restartAutoplay(); }
+                if (e.key === 'ArrowRight') { next(); restartAutoplay(); }
+            });
+
+            // Свайп на тач-устройствах
+            let startX = null;
+            slider.addEventListener('touchstart', function (e) {
+                startX = e.touches[0].clientX;
+                stopAutoplay();
+            }, { passive: true });
+
+            slider.addEventListener('touchend', function (e) {
+                if (startX === null) return;
+                const delta = e.changedTouches[0].clientX - startX;
+                if (Math.abs(delta) > 40) {
+                    delta < 0 ? next() : prev();
+                }
+                startX = null;
+                startAutoplay();
+            });
+
+            // Автопрокрутка
+            function startAutoplay() {
+                stopAutoplay();
+                autoplayId = setInterval(next, AUTOPLAY_MS);
+            }
+            function stopAutoplay() {
+                if (autoplayId) { clearInterval(autoplayId); autoplayId = null; }
+            }
+            function restartAutoplay() {
+                stopAutoplay();
+                startAutoplay();
+            }
+
+            slider.addEventListener('mouseenter', stopAutoplay);
+            slider.addEventListener('mouseleave', startAutoplay);
+            slider.addEventListener('focusin', stopAutoplay);
+            slider.addEventListener('focusout', startAutoplay);
+
+            render();
+            startAutoplay();
+        });
+    })();
+    </script>
+    <!-- СКРИПТ СЛАЙДЕРА КАРТИНОК КОНЕЦ-->
+</body>
+</html>
