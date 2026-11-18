@@ -162,7 +162,7 @@
 
       <div class="admin-panel" id="adminPanel">
       <p>Режим администратора.</p>
-      <a href="ССЫЛКА_НА_ВАШУ_GOOGLE_ТАБЛИЦУ" target="_blank" class="btn btn-success" style="display:inline-block;text-decoration:none;">
+      <a href="https://docs.google.com/spreadsheets/d/1AF2b5Usn33eYgsjcc4Cv6_fgdWwVkZgfxtglEx_0Wms/edit?usp=sharing" target="_blank" class="btn btn-success" style="display:inline-block;text-decoration:none;">
       Открыть таблицу с ответами
       </a>
       </div>
@@ -656,7 +656,7 @@ function loadSubmissions() {
 }
 
 async function saveSubmission() {
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbyMu6EHzoeQ1HbSt9SobKPtlONTLPe3yydImESIoKr1IpFETejz0-kn3DUjelx9fsJe/exec';
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbwtlBqG0qnSDbGp9r6sTkB3Rx579kpGXkgqVu_9xt6god2m7pmDD_UMQKDETQR4gK9w/exec';
 
   const gotIt = document.querySelector('input[name="gotIt"]:checked').value;
   const comment = gotIt === 'Нет' ? $('comment').value.trim() : '';
